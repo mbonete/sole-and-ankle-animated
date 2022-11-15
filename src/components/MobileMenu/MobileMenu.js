@@ -8,10 +8,12 @@ import { QUERIES, WEIGHTS } from '../../constants';
 import UnstyledButton from '../UnstyledButton';
 import Icon from '../Icon';
 import VisuallyHidden from '../VisuallyHidden';
+import { keyframes } from 'styled-components';
 
 const MobileMenu = ({ isOpen, onDismiss }) => {
   return (
-    <Overlay isOpen={isOpen} onDismiss={onDismiss}>
+    <Wrapper isOpen={isOpen} onDismiss={onDismiss}>
+      <Backdrop/>
       <Content aria-label="Menu">
         <CloseButton onClick={onDismiss}>
           <Icon id="close" />
@@ -32,28 +34,60 @@ const MobileMenu = ({ isOpen, onDismiss }) => {
           <SubLink href="/contact">Contact Us</SubLink>
         </Footer>
       </Content>
-    </Overlay>
+    </Wrapper>
   );
 };
 
-const Overlay = styled(DialogOverlay)`
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
+const slideIn = keyframes`
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+`;
+
+const Wrapper = styled(DialogOverlay)`
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: var(--color-backdrop);
+  background: transparent;
   display: flex;
   justify-content: flex-end;
 `;
 
+const Backdrop = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--color-backdrop);
+  animation: ${fadeIn} 500ms; 
+`;
+
 const Content = styled(DialogContent)`
+  position: relative;
   background: white;
   width: 300px;
   height: 100%;
   padding: 24px 32px;
   display: flex;
   flex-direction: column;
+  animation: ${slideIn} 200ms ease-out both;
+  animation-delay: 200ms;
+
 `;
 
 const CloseButton = styled(UnstyledButton)`

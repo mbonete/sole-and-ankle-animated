@@ -1,4 +1,5 @@
 import React from 'react';
+import { keyframes } from 'styled-components';
 import styled from 'styled-components/macro';
 
 import { WEIGHTS } from '../../constants';
@@ -36,11 +37,11 @@ const ShoeCard = ({
       <Wrapper>
         <ImageWrapper>
           <Image alt="" src={imageSrc} />
-          {variant === 'on-sale' && <SaleFlag>Sale</SaleFlag>}
-          {variant === 'new-release' && (
-            <NewFlag>Just released!</NewFlag>
-          )}
         </ImageWrapper>
+        {variant === 'on-sale' && <SaleFlag>Sale</SaleFlag>}
+        {variant === 'new-release' && (
+          <NewFlag>Just released!</NewFlag>
+        )}
         <Spacer size={12} />
         <Row>
           <Name>{name}</Name>
@@ -73,15 +74,33 @@ const Link = styled.a`
   color: inherit;
 `;
 
-const Wrapper = styled.article``;
-
-const ImageWrapper = styled.div`
+const Wrapper = styled.article`
   position: relative;
 `;
 
-const Image = styled.img`
-  width: 100%;
+const ImageWrapper = styled.div`
   border-radius: 16px 16px 4px 4px;
+  overflow: hidden;
+  
+`;
+
+
+const Image = styled.img`
+  display: block;
+  width: 100%;
+  transition: transform 600ms;
+  transform-origin: bottom;
+  will-change: transform;
+
+  @media (prefers-reduced-motion: no-preference) {
+    ${Link}:hover &,
+    ${Link}:focus & {
+      transform: scale(1.1);
+      transition: transform 200ms;
+      filter: brightness(102%);
+    }
+  }
+  
 `;
 
 const Row = styled.div`
@@ -121,6 +140,17 @@ const Flag = styled.div`
   font-weight: ${WEIGHTS.bold};
   color: var(--color-white);
   border-radius: 2px;
+  will-change: transform;
+  transition: transform 600ms;
+
+
+  @media (prefers-reduced-motion: no-preference) {
+    ${Link}:hover &,
+    ${Link}:focus & {
+      transform: translateX(10px);
+      transition: transform 200ms;
+    }
+  }
 `;
 
 const SaleFlag = styled(Flag)`
